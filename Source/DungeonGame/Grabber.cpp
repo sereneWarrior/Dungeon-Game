@@ -72,7 +72,7 @@ void UGrabber::Grab()
 			NAME_None,
 			hitResult.ImpactPoint,
 			hitResult.GetComponent()->GetComponentRotation());
-
+		isHolding = true;
 	}
 }
 
@@ -86,6 +86,7 @@ void UGrabber::Release()
 	PlaceObjectOnSocket();
 
 	PhysicsHandle->ReleaseComponent();
+	isHolding = false;
 }
 
 void UGrabber::PlaceObjectOnSocket()

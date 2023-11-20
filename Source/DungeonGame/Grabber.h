@@ -26,12 +26,13 @@ class DUNGEONGAME_API UGrabber : public USceneComponent
 	FVector HoldOffsetRight = FVector(50.0f, 0.0f, 0.0f);
 
 	UPhysicsHandleComponent* PhysicsHandle;
-
 	AActor* ReleaseSocketActor;
+	bool isHolding = false;
 
 	bool DetectedGrabbableObject(FHitResult& out_hitResult) const;
-
 	bool DetectedSocketObject(FHitResult& out_hitResult) const;
+
+	
 
 public:	
 	// Sets default values for this component's properties
@@ -42,6 +43,10 @@ public:
 	void Release();
 
 	void PlaceObjectOnSocket();
+
+	bool IsHoldingObject() const {
+		return isHolding;
+	};
 
 protected:
 	// Called when the game starts

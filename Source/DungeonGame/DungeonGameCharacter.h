@@ -83,5 +83,6 @@ public:
 
 	UPhysicsHandleComponent* GetPhysicsHandleComponent() const { return PhysicsHandle; }
 
+	UGrabber* GetGrabber() const { return Grabber; }
 };
 
