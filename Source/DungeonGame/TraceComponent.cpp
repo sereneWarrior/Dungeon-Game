@@ -3,7 +3,7 @@
 
 #include "TraceComponent.h"
 #include <Kismet/GameplayStatics.h>
-#include "DungeonGameCharacter.h"
+
 
 // Sets default values for this component's properties
 UTraceComponent::UTraceComponent()
@@ -21,8 +21,13 @@ void UTraceComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Grabber = Cast<ADungeonGameCharacter>(GetOwner())->GetGrabber();
-	
+	Owner = Cast<ADungeonGameCharacter>(GetOwner());
+	if (!Owner)
+	{
+		UE_LOG(LogTemp, Error, TEXT("TraceComponent failed to set owner."))
+	}
+
+	Grabber = Owner->GetGrabber();
 }
 
 
@@ -37,6 +42,7 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	FCollisionShape Sphere = FCollisionShape::MakeSphere(100.0f);
 	FHitResult out_hitResult;
 
+	// TODO: Move check to variable in character class.
 	if (Grabber->IsHoldingObject())
 	{
 		GetWorld()->SweepSingleByChannel(out_hitResult,
@@ -57,9 +63,11 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	}
 	
 	
-	if (out_hitResult.GetComponent())
+	if (out_hitResult.GetComponent() &&
+		out_hitResult.GetComponent() != Owner->GetTracedObject()->GetComponent())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Actor: %s"), *out_hitResult.GetComponent()->GetName());
+		Owner->SetTracedObject(out_hitResult);
+		UE_LOG(LogTemp, Warning, TEXT("Actor: %s"), *Owner->GetTracedObject()->GetActor()->GetName());
 	}
 	
 }

@@ -44,6 +44,13 @@ void ADungeonGameCharacter::BeginPlay()
 		}
 	}
 }
+void ADungeonGameCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	
+	if (TracedObject.GetActor())
+		UE_LOG(LogTemp, Warning, TEXT("Character Traced obj: %s"),*TracedObject.GetActor()->GetName());
+}
 //////////////////////////////////////////////////////////////////////////// Input
 
 void ADungeonGameCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -62,7 +69,7 @@ void ADungeonGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADungeonGameCharacter::Look);
 	
 		//Grab
-		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Started, Grabber, &UGrabber::Grab);
+		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Started, Grabber, &UGrabber::Grab, &TracedObject);
 		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Completed, Grabber, &UGrabber::Release);
 	
 		//Looking

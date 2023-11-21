@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+
 #include "Grabber.h"
+#include "DungeonGameCharacter.h"
 
 #include "TraceComponent.generated.h"
 
@@ -14,17 +16,14 @@ class DUNGEONGAME_API UTraceComponent : public USceneComponent
 {
 	GENERATED_BODY()
 
-	/*UPROPERTY(EditAnywhere)
-	ECollisionChannel NoHold;
-
-	UPROPERTY(EditAnywhere)
-	ECollisionChannel Hold;*/
-
 	UGrabber* Grabber;
+
+	ADungeonGameCharacter* Owner;
 
 public:	
 	// Sets default values for this component's properties
 	UTraceComponent();
+
 
 protected:
 	// Called when the game starts

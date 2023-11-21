@@ -55,12 +55,22 @@ class ADungeonGameCharacter : public ACharacter
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Grabber, meta = (AllowPrivateAccess = "true"))
 	UGrabber* Grabber;
+
+	
 	
 public:
 	ADungeonGameCharacter();
+	// TODO: No
+	FHitResult TracedObject;
+
+	FHitResult* GetTracedObject() { return &TracedObject; }
+	void SetTracedObject(FHitResult &hitResult) { TracedObject = hitResult; }
 
 protected:
 	virtual void BeginPlay();
+
+	virtual void Tick(float DeltaTime) override;
+
 
 protected:
 	/** Called for movement input */

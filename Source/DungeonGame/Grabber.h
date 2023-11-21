@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
 #include <PhysicsEngine/PhysicsHandleComponent.h>
+#include "InputActionValue.h"
 
 #include "Grabber.generated.h"
 
@@ -26,10 +27,13 @@ class DUNGEONGAME_API UGrabber : public USceneComponent
 	FVector HoldOffsetRight = FVector(50.0f, 0.0f, 0.0f);
 
 	UPhysicsHandleComponent* PhysicsHandle;
+
 	AActor* ReleaseSocketActor;
+
 	bool isHolding = false;
 
 	bool DetectedGrabbableObject(FHitResult& out_hitResult) const;
+
 	bool DetectedSocketObject(FHitResult& out_hitResult) const;
 
 	
@@ -38,7 +42,7 @@ public:
 	// Sets default values for this component's properties
 	UGrabber();
 
-	void Grab();
+	void Grab(const FInputActionValue& value, FHitResult* hitResult);
 
 	void Release();
 

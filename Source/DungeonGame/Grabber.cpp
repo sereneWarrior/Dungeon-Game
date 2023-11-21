@@ -51,7 +51,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	}
 }
 
-void UGrabber::Grab()
+void UGrabber::Grab(const FInputActionValue& value, FHitResult* hitResult)
 {
 	if (PhysicsHandle == nullptr)
 	{
@@ -59,19 +59,19 @@ void UGrabber::Grab()
 		return;
 	}
 
-	FHitResult hitResult;
-	if (DetectedGrabbableObject(hitResult))
+	//FHitResult hitResult;
+	if (hitResult->GetComponent() && hitResult->GetComponent()->ComponentHasTag("Grabbable"))
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("Grab activated"));
-		UE_LOG(LogTemp, Warning, TEXT("Target: %s"), *hitResult.GetActor()->GetName());
-		UPrimitiveComponent* hitComponent = hitResult.GetComponent();
+		UPrimitiveComponent* hitComponent = hitResult->GetComponent();
+		UE_LOG(LogTemp, Warning, TEXT("Target: %s"), *hitComponent->GetName());
 		hitComponent->WakeAllRigidBodies();
 
 		hitComponent->SetSimulatePhysics(true);
-		PhysicsHandle->GrabComponentAtLocationWithRotation(hitResult.GetComponent(),
+		PhysicsHandle->GrabComponentAtLocationWithRotation(hitResult->GetComponent(),
 			NAME_None,
-			hitResult.ImpactPoint,
-			hitResult.GetComponent()->GetComponentRotation());
+			hitResult->ImpactPoint,
+			hitComponent->GetComponentRotation());
 		isHolding = true;
 	}
 }
