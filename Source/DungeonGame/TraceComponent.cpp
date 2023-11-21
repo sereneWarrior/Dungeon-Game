@@ -4,7 +4,6 @@
 #include "TraceComponent.h"
 #include <Kismet/GameplayStatics.h>
 
-
 // Sets default values for this component's properties
 UTraceComponent::UTraceComponent()
 {
@@ -36,6 +35,12 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	Trace();
+
+}
+
+void UTraceComponent::Trace()
+{
 	FVector start = GetComponentLocation();
 	FVector end = start + GetForwardVector() * 100.0f;
 
@@ -55,20 +60,20 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	else
 	{
 		GetWorld()->SweepSingleByChannel(out_hitResult,
-				start,
-				end,
-				FQuat::Identity,
-				ECC_GameTraceChannel4,
-				Sphere);
+			start,
+			end,
+			FQuat::Identity,
+			ECC_GameTraceChannel4,
+			Sphere);
 	}
-	
-	
-	if (out_hitResult.GetComponent() &&
-		out_hitResult.GetComponent() != Owner->GetTracedObject()->GetComponent())
-	{
-		Owner->SetTracedObject(out_hitResult);
-		UE_LOG(LogTemp, Warning, TEXT("Actor: %s"), *Owner->GetTracedObject()->GetActor()->GetName());
-	}
-	
+
+
+	if (!out_hitResult.GetComponent() ||
+		out_hitResult.GetComponent() == Owner->GetTracedObject()->GetComponent())
+		return;
+	// TODO: Maybe use property to access hitresult in Character, remove dependency to Charactor
+	Owner->SetTracedObject(out_hitResult);
+	//UE_LOG(LogTemp, Warning, TEXT("Actor: %s"), *Owner->GetTracedObject()->GetActor()->GetName());
+
 }
 

@@ -20,6 +20,8 @@ class DUNGEONGAME_API UTraceComponent : public USceneComponent
 
 	ADungeonGameCharacter* Owner;
 
+	void Trace();
+
 public:	
 	// Sets default values for this component's properties
 	UTraceComponent();

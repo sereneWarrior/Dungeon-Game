@@ -32,21 +32,15 @@ class DUNGEONGAME_API UGrabber : public USceneComponent
 
 	bool isHolding = false;
 
-	bool DetectedGrabbableObject(FHitResult& out_hitResult) const;
-
-	bool DetectedSocketObject(FHitResult& out_hitResult) const;
-
-	
-
 public:	
 	// Sets default values for this component's properties
 	UGrabber();
 
 	void Grab(const FInputActionValue& value, FHitResult* hitResult);
 
-	void Release();
+	void Release(const FInputActionValue& value, FHitResult* hitResult);
 
-	void PlaceObjectOnSocket();
+	void PlaceObjectOnSocket(FHitResult* hitResult);
 
 	bool IsHoldingObject() const {
 		return isHolding;

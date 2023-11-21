@@ -70,7 +70,7 @@ void ADungeonGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 	
 		//Grab
 		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Started, Grabber, &UGrabber::Grab, &TracedObject);
-		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Completed, Grabber, &UGrabber::Release);
+		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Completed, Grabber, &UGrabber::Release, &TracedObject);
 	
 		//Looking
 		EnhancedInputComponent->BindAction(InterAction, ETriggerEvent::Triggered, this, &ADungeonGameCharacter::Interact);
