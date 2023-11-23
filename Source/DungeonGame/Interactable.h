@@ -23,5 +23,5 @@ class DUNGEONGAME_API IInteractable
 
 public:
 
-	void Interact();
+	void Interact(AActor* otherActor);
 };

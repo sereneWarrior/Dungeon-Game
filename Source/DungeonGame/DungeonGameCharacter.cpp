@@ -7,6 +7,8 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "InflammableObject.h"
+#include "InflammableObject.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -16,7 +18,7 @@ ADungeonGameCharacter::ADungeonGameCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
-		
+
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
@@ -47,9 +49,6 @@ void ADungeonGameCharacter::BeginPlay()
 void ADungeonGameCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	if (TracedObject.GetActor())
-		UE_LOG(LogTemp, Warning, TEXT("Character Traced obj: %s"),*TracedObject.GetActor()->GetName());
 }
 //////////////////////////////////////////////////////////////////////////// Input
 
@@ -67,11 +66,11 @@ void ADungeonGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADungeonGameCharacter::Look);
-	
+
 		//Grab
 		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Started, Grabber, &UGrabber::Grab, &TracedObject);
 		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Completed, Grabber, &UGrabber::Release, &TracedObject);
-	
+
 		//Looking
 		EnhancedInputComponent->BindAction(InterAction, ETriggerEvent::Triggered, this, &ADungeonGameCharacter::Interact);
 
@@ -107,14 +106,19 @@ void ADungeonGameCharacter::Look(const FInputActionValue& Value)
 
 void ADungeonGameCharacter::Interact(const FInputActionValue& Value)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Holding Flammable object"));
+	//Call other Interact funtion? Just interact with single object f.e. door.
+	if (!Grabber->IsHoldingObject())
+		return;
 
-	// Light fire/ torch
-	// Is Physicshandle holding torch?
-	if (PhysicsHandle->GetGrabbedComponent()->ComponentHasTag(FName("Flammable")))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Holding Flammable object"));
-	}
+	// Light fire or torch
+	// TODO: Refator nesting
+	if (!TracedObject.GetActor()
+		&& !TracedObject.GetActor()->Implements<UInteractable>())
+		return;
+
+	// Interact with flammable objects.
+	if (auto flammable = Cast<AInflammableObject>(TracedObject.GetActor()))
+		flammable->Interact(PhysicsHandle->GetGrabbedComponent()->GetOwner());
 
 }
 
