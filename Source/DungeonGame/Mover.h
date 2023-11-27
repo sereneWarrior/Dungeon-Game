@@ -8,7 +8,7 @@
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class DUNGEONGAME_API UMover : public UActorComponent
+class DUNGEONGAME_API UMover : public USceneComponent
 {
 	GENERATED_BODY()
 

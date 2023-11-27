@@ -25,4 +25,7 @@ protected:
 
 	virtual void MoveObject(float DeltaTime) override;
 
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mover)
+	UStaticMeshComponent* Mesh;
 };

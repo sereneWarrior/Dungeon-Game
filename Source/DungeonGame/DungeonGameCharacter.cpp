@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InflammableObject.h"
 #include "InflammableObject.h"
+#include "PushableObject.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,6 +75,8 @@ void ADungeonGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		//Looking
 		EnhancedInputComponent->BindAction(InterAction, ETriggerEvent::Triggered, this, &ADungeonGameCharacter::Interact);
 
+		EnhancedInputComponent->BindAction(PushAction, ETriggerEvent::Triggered, this, &ADungeonGameCharacter::Push);
+		
 	}
 }
 
@@ -110,10 +113,8 @@ void ADungeonGameCharacter::Interact(const FInputActionValue& Value)
 	if (!Grabber->IsHoldingObject())
 		return;
 
-	// Light fire or torch
-	// TODO: Refator nesting
 	if (!TracedObject.GetActor()
-		&& !TracedObject.GetActor()->Implements<UInteractable>())
+		|| !TracedObject.GetActor()->Implements<UInteractable>())
 		return;
 
 	// Interact with flammable objects.
@@ -121,5 +122,22 @@ void ADungeonGameCharacter::Interact(const FInputActionValue& Value)
 		flammable->Interact(PhysicsHandle->GetGrabbedComponent()->GetOwner());
 
 }
+
+void ADungeonGameCharacter::Push(const FInputActionValue& Value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Push"));
+	if (Grabber->IsHoldingObject())
+		return;
+
+
+	if (!TracedObject.GetActor()
+		|| !TracedObject.GetActor()->Implements<UInteractable>())
+		return;
+
+	if (auto pushable = Cast<APushableObject>(TracedObject.GetActor()))
+		pushable->Interact();
+
+}
+
 
 

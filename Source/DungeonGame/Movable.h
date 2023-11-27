@@ -8,7 +8,7 @@
 
 
 UCLASS( Abstract )
-class DUNGEONGAME_API UMovable : public UActorComponent
+class DUNGEONGAME_API UMovable : public USceneComponent
 {
 	GENERATED_BODY()
 
