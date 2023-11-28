@@ -9,7 +9,12 @@ UMovable::UMovable()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+
+
 	
+	
+	//T->AddInterpFloat(CurveFloat, TimelineProgress);
+
 }
 
 
@@ -19,23 +24,36 @@ void UMovable::BeginPlay()
 	Super::BeginPlay();
 
 	owner = GetOwner();
-	
+	FOnTimelineFloat ProgressUpdate;
+	ProgressUpdate.BindUFunction(this, FName("MoveObjectTimeline"));
+
+	Timeline.AddInterpFloat(CurveFloat, ProgressUpdate);
+	Timeline.SetPlayRate(1.0f / TransitionTime);
+	Timeline.SetTimelineLength(1.0f);
 }
 
+
+void UMovable::TimelineTest(float Alpha)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Timeline value: %f"), Alpha);
+}
 
 // Called every frame
 void UMovable::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if (ShouldMove)
-	{
-		MoveObject(DeltaTime);
-	}
+	Timeline.TickTimeline(DeltaTime);
 }
 
 void UMovable::SetShouldMove(bool NewShouldMove)
 {
+	// TODO: Refactor...
+	if (!ShouldMove && NewShouldMove)
+	{
+		Timeline.Play();
+	}
+		
 	ShouldMove = NewShouldMove;
 }
+
 

@@ -16,3 +16,8 @@ void UObjectRotator::MoveObject(float DeltaTime)
 	FRotator RotationAfterTransition = FMath::RInterpConstantTo(owner->GetActorRotation(), TargetRotation, DeltaTime, TransitionTime);
 	owner->SetActorRotation(RotationAfterTransition);
 }
+
+void UObjectRotator::MoveObjectTimeline(float Value)
+{
+	owner->SetActorRelativeRotation(TargetRotation * Value);
+}

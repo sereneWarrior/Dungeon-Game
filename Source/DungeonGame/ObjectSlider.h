@@ -21,11 +21,13 @@ class DUNGEONGAME_API UObjectSlider : public UMovable
 
 	float TranslationSpeed;
 
+	FVector OriginLoc;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	virtual void MoveObject(float DeltaTime) override;
 
-
+	UFUNCTION(BlueprintCallable)
+	virtual void MoveObjectTimeline(float Value) override;
 };

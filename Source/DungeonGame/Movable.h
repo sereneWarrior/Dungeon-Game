@@ -4,15 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Movable.generated.h"
+#include <Components/TimelineComponent.h>
 
+#include "Movable.generated.h"
 
 UCLASS( Abstract )
 class DUNGEONGAME_API UMovable : public USceneComponent
 {
 	GENERATED_BODY()
-
-	
 
 protected:
 	// Sets default values for this component's properties
@@ -26,11 +25,20 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Mover)
 	float TransitionTime;
 
-	UPROPERTY(EditAnywhere, Category = Mover)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mover)
 	bool ShouldMove = false;
 
-	virtual void MoveObject(float DeltaTime) PURE_VIRTUAL(UMovable::RemoveReplicatedSubObject,);
+	FTimeline Timeline;
 
+	UPROPERTY(EditAnywhere, Category = Mover)
+	UCurveFloat* CurveFloat;
+	
+	// DEPRECATED
+	virtual void MoveObject(float DeltaTime) PURE_VIRTUAL(UMovable::RemoveReplicatedSubObject,);
+	
+	virtual void MoveObjectTimeline(float Alpha) PURE_VIRTUAL(UMovable::RemoveReplicatedSubObject, );
+	UFUNCTION()
+	 void TimelineTest(float Alpha);
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

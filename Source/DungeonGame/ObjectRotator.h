@@ -24,6 +24,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void MoveObject(float DeltaTime) override;
+	UFUNCTION()
+	virtual void MoveObjectTimeline(float Value) override;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mover)
