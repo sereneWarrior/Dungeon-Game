@@ -24,6 +24,8 @@ void UMovable::BeginPlay()
 	Super::BeginPlay();
 
 	owner = GetOwner();
+	auto Actor = GetAttachmentRootActor();
+	UE_LOG(LogTemp, Warning, TEXT("Owner %s"), *owner->GetName());
 	FOnTimelineFloat ProgressUpdate;
 	ProgressUpdate.BindUFunction(this, FName("MoveObjectTimeline"));
 
@@ -47,10 +49,16 @@ void UMovable::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 void UMovable::SetShouldMove(bool NewShouldMove)
 {
+
 	// TODO: Refactor...
 	if (!ShouldMove && NewShouldMove)
 	{
 		Timeline.Play();
+	}
+
+	if (ShouldMove && !NewShouldMove)
+	{
+		Timeline.Reverse();
 	}
 		
 	ShouldMove = NewShouldMove;

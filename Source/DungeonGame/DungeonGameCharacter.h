@@ -57,6 +57,10 @@ class ADungeonGameCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* PushAction;
 
+	/** Push Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* ForwardAction;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Grabber, meta = (AllowPrivateAccess = "true"))
 	UGrabber* Grabber;
 
@@ -88,6 +92,10 @@ protected:
 
 	/** Called for pushing input */
 	void Push(const FInputActionValue& Value);
+
+	void Forward(const FInputActionValue& Value);
+
+	void ForwardStop(const FInputActionValue & Value);
 
 protected:
 	// APawn interface

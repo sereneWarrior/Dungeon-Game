@@ -17,6 +17,13 @@ class DUNGEONGAME_API APushableObject : public AActor, public IInteractable
 	GENERATED_BODY()
 
 	UMovable* Mover;
+
+	UPROPERTY(EditAnywhere)
+	int MaxPushCount = 2;
+
+	int currentPushCount = 0;
+
+	bool moveForward = true;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -32,4 +39,11 @@ public:
 
 	virtual void Interact(AActor* otherActor = nullptr);
 
+	void InteractionStopped();
+	void InteractionStarted();
+
+	void SetAction(bool moveFw) { moveForward = moveFw; }
+
+	UFUNCTION()
+	void PrintEvent();
 };

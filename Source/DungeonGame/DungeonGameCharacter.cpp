@@ -77,6 +77,8 @@ void ADungeonGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 		EnhancedInputComponent->BindAction(PushAction, ETriggerEvent::Triggered, this, &ADungeonGameCharacter::Push);
 		
+		EnhancedInputComponent->BindAction(ForwardAction, ETriggerEvent::Started, this, &ADungeonGameCharacter::Forward);
+		EnhancedInputComponent->BindAction(ForwardAction, ETriggerEvent::Completed, this, &ADungeonGameCharacter::ForwardStop);
 	}
 }
 
@@ -133,11 +135,43 @@ void ADungeonGameCharacter::Push(const FInputActionValue& Value)
 	if (!TracedObject.GetActor()
 		|| !TracedObject.GetActor()->Implements<UInteractable>())
 		return;
-
+	// Open door completely
 	if (auto pushable = Cast<APushableObject>(TracedObject.GetActor()))
 		pushable->Interact();
 
 }
+
+void ADungeonGameCharacter::Forward(const FInputActionValue& Value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("FW stopped"));
+	if (Grabber->IsHoldingObject())
+		return;
+
+
+	if (!TracedObject.GetActor()
+		|| !TracedObject.GetActor()->Implements<UInteractable>())
+		return;
+
+	// Open Door slightly
+	if (auto pushable = Cast<APushableObject>(TracedObject.GetActor()))
+		pushable->InteractionStarted();
+}
+
+void ADungeonGameCharacter::ForwardStop(const FInputActionValue& Value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("FW stopped"));
+	if (Grabber->IsHoldingObject())
+		return;
+
+
+	if (!TracedObject.GetActor()
+		|| !TracedObject.GetActor()->Implements<UInteractable>())
+		return;
+	// Close Door
+	if (auto pushable = Cast<APushableObject>(TracedObject.GetActor()))
+		pushable->InteractionStopped();
+}
+
 
 
 
