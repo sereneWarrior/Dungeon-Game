@@ -64,14 +64,20 @@ class ADungeonGameCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Grabber, meta = (AllowPrivateAccess = "true"))
 	UGrabber* Grabber;
 
-	
-	
+	// TODO: Think about better way to set and store the necessary trace channels.
+	//UPROPERTY(EditDefaultsOnly)
+	TEnumAsByte<ECollisionChannel> DefaultTraceChannel = ECollisionChannel::ECC_GameTraceChannel4;
+
+	// TODO: Tracing data struct?
+	// TODO: Better have it type Actor?
+	FHitResult TracedObject;
+	int CurrentTraceChannel = DefaultTraceChannel;
+
 public:
 	ADungeonGameCharacter();
-	// TODO: No
-	FHitResult TracedObject;
-
+	
 	FHitResult* GetTracedObject() { return &TracedObject; }
+
 	void SetTracedObject(FHitResult &hitResult) { TracedObject = hitResult; }
 
 protected:
@@ -108,6 +114,10 @@ public:
 
 	UPhysicsHandleComponent* GetPhysicsHandleComponent() const { return PhysicsHandle; }
 
-	UGrabber* GetGrabber() const { return Grabber; }
+	void SetTraceChannel(int newChannel) { CurrentTraceChannel = newChannel; }
+
+	void ResetTraceChannel() { CurrentTraceChannel = DefaultTraceChannel; }
+
+	int GetTraceChannel() const { return CurrentTraceChannel; }
 };
 

@@ -22,8 +22,6 @@ class DUNGEONGAME_API UTraceComponent : public USceneComponent
 	UPROPERTY(EditAnywhere)
 	float TraceSphereRadius = 20.0f;
 
-	UGrabber* Grabber;
-
 	ADungeonGameCharacter* Owner;
 
 	void Trace();

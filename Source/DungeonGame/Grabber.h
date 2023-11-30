@@ -9,6 +9,8 @@
 
 #include "Grabber.generated.h"
 
+class ADungeonGameCharacter;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class DUNGEONGAME_API UGrabber : public USceneComponent
 {
@@ -26,11 +28,16 @@ class DUNGEONGAME_API UGrabber : public USceneComponent
 	UPROPERTY(EditAnywhere)
 	FVector HoldOffsetRight = FVector(50.0f, 0.0f, 0.0f);
 
+	UPROPERTY(EditAnywhere)
+	TEnumAsByte<ECollisionChannel> TraceChannel = ECollisionChannel::ECC_GameTraceChannel3;
+
 	UPhysicsHandleComponent* PhysicsHandle;
 
 	AActor* ReleaseSocketActor;
 
 	bool isHolding = false;
+
+	ADungeonGameCharacter* Owner;
 
 public:	
 	// Sets default values for this component's properties

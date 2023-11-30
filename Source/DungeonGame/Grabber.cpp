@@ -19,7 +19,9 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	PhysicsHandle = Cast<ADungeonGameCharacter>(GetOwner())->GetPhysicsHandleComponent();
+	Owner = Cast<ADungeonGameCharacter>(GetOwner());
+
+	PhysicsHandle = Owner->GetPhysicsHandleComponent();
 	if (!PhysicsHandle)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Handle missing"));
@@ -55,7 +57,8 @@ void UGrabber::Grab(const FInputActionValue& value, FHitResult* hitResult)
 		hitResult->ImpactPoint,
 		hitComponent->GetComponentRotation());
 	isHolding = true;
-
+	// Change the current used trace channel to channel for holder object
+	Owner->SetTraceChannel(TraceChannel);
 }
 
 void UGrabber::Release(const FInputActionValue& value, FHitResult* hitResult)
@@ -70,6 +73,9 @@ void UGrabber::Release(const FInputActionValue& value, FHitResult* hitResult)
 
 	PhysicsHandle->ReleaseComponent();
 	isHolding = false;
+
+	// Reset Tracing channel to default (can open doors or grab new object
+	Owner->ResetTraceChannel();
 }
 
 void UGrabber::PlaceObjectOnSocket(FHitResult* hitResult)
@@ -84,4 +90,7 @@ void UGrabber::PlaceObjectOnSocket(FHitResult* hitResult)
 	PhysicsHandle->GetGrabbedComponent()->GetOwner()->SetActorLocation(socketLocation);
 	PhysicsHandle->GetGrabbedComponent()->GetOwner()->SetActorRotation(socketRotation);
 	PhysicsHandle->GetGrabbedComponent()->SetSimulatePhysics(false);
+
+
+	
 }

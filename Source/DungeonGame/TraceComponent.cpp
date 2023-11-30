@@ -25,8 +25,6 @@ void UTraceComponent::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("TraceComponent failed to set owner."))
 	}
-
-	Grabber = Owner->GetGrabber();
 }
 
 
@@ -50,33 +48,20 @@ void UTraceComponent::Trace()
 	// DEBUG Spheres
 	// DrawDebugSphere(GetWorld(), start, TraceSphereRadius/2, 16, FColor::Red);
 	// DrawDebugSphere(GetWorld(), end, TraceSphereRadius, 16, FColor::Blue);
-	// TODO: Move check to variable in character class.
-	if (Grabber->IsHoldingObject())
-	{
-		GetWorld()->SweepSingleByChannel(out_hitResult,
-			start,
-			end,
-			FQuat::Identity,
-			ECC_GameTraceChannel3,
-			Sphere);
-	}
-	else
-	{
-		GetWorld()->SweepSingleByChannel(out_hitResult,
-			start,
-			end,
-			FQuat::Identity,
-			ECC_GameTraceChannel4,
-			Sphere);
-	}
+
+	GetWorld()->SweepSingleByChannel(out_hitResult,
+		start,
+		end,
+		FQuat::Identity,
+		(ECollisionChannel)Owner->GetTraceChannel(),
+		Sphere);
 
 	if (out_hitResult.GetComponent() == Owner->GetTracedObject()->GetComponent())
 		return;
 	// TODO: Maybe use property to access hitresult in Character, remove dependency to Charactor
 	Owner->SetTracedObject(out_hitResult);
 
-	
-	UE_LOG(LogTemp, Warning, TEXT("Actor: %s"), 
+	UE_LOG(LogTemp, Warning, TEXT("Traced Actor: %s"),
 		Owner->GetTracedObject()->GetActor() ?
 		*Owner->GetTracedObject()->GetActor()->GetName() :
 		TEXT("NULL"));
