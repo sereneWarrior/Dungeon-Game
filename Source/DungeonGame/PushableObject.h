@@ -39,11 +39,9 @@ public:
 
 	virtual void Interact(AActor* otherActor = nullptr);
 
+	UFUNCTION()
 	void InteractionStopped();
 	void InteractionStarted();
 
 	void SetAction(bool moveFw) { moveForward = moveFw; }
-
-	UFUNCTION()
-	void PrintEvent();
 };

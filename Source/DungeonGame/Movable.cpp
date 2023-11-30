@@ -25,7 +25,7 @@ void UMovable::BeginPlay()
 
 	owner = GetOwner();
 	auto Actor = GetAttachmentRootActor();
-	UE_LOG(LogTemp, Warning, TEXT("Owner %s"), *owner->GetName());
+// TODO: Put Timelines int owner class?
 	FOnTimelineFloat ProgressUpdate;
 	ProgressUpdate.BindUFunction(this, FName("MoveObjectTimeline"));
 

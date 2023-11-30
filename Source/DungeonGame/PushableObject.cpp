@@ -32,6 +32,7 @@ void APushableObject::Interact(AActor* otherActor)
 
 void APushableObject::InteractionStopped()
 {
+	UE_LOG(LogTemp, Warning, TEXT("TimelineEvent from owner"));
 	if (currentPushCount >= MaxPushCount)
 		return;
 	Mover->SetShouldMove(false);
@@ -39,11 +40,7 @@ void APushableObject::InteractionStopped()
 
 void APushableObject::InteractionStarted()
 {
-	Mover->SetShouldMove(true);
 	currentPushCount++;
-}
-
-void APushableObject::PrintEvent()
-{
-	UE_LOG(LogTemp, Warning, TEXT("TimelineEvent from owner"));
+	Mover->SetShouldMove(true);
+	
 }

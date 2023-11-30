@@ -44,9 +44,9 @@ void UTraceComponent::Trace()
 	FVector start = GetComponentLocation();
 	FVector end = start + GetForwardVector() * 100.0f;
 
-	FCollisionShape Sphere = FCollisionShape::MakeSphere(100.0f);
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(50.0f);
 	FHitResult out_hitResult;
-
+	DrawDebugSphere(GetWorld(), end, 50, 16, FColor::Blue);
 	// TODO: Move check to variable in character class.
 	if (Grabber->IsHoldingObject())
 	{

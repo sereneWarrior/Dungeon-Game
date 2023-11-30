@@ -31,6 +31,4 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mover)
 	UStaticMeshComponent* Mesh;
 
-	UFUNCTION()
-	void PrintEvent();
 };

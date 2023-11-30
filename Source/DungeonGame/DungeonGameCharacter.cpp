@@ -143,7 +143,7 @@ void ADungeonGameCharacter::Push(const FInputActionValue& Value)
 
 void ADungeonGameCharacter::Forward(const FInputActionValue& Value)
 {
-	UE_LOG(LogTemp, Warning, TEXT("FW stopped"));
+	UE_LOG(LogTemp, Warning, TEXT("FW started"));
 	if (Grabber->IsHoldingObject())
 		return;
 
@@ -160,16 +160,16 @@ void ADungeonGameCharacter::Forward(const FInputActionValue& Value)
 void ADungeonGameCharacter::ForwardStop(const FInputActionValue& Value)
 {
 	UE_LOG(LogTemp, Warning, TEXT("FW stopped"));
-	if (Grabber->IsHoldingObject())
-		return;
+	//if (Grabber->IsHoldingObject())
+	//	return;
 
 
-	if (!TracedObject.GetActor()
-		|| !TracedObject.GetActor()->Implements<UInteractable>())
-		return;
-	// Close Door
-	if (auto pushable = Cast<APushableObject>(TracedObject.GetActor()))
-		pushable->InteractionStopped();
+	//if (!TracedObject.GetActor()
+	//	|| !TracedObject.GetActor()->Implements<UInteractable>())
+	//	return;
+	//// Close Door
+	//if (auto pushable = Cast<APushableObject>(TracedObject.GetActor()))
+	//	pushable->InteractionStopped();
 }
 
 
