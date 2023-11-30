@@ -16,6 +16,12 @@ class DUNGEONGAME_API UTraceComponent : public USceneComponent
 {
 	GENERATED_BODY()
 
+	UPROPERTY(EditAnywhere)
+	float TraceDistance = 100.0f;
+
+	UPROPERTY(EditAnywhere)
+	float TraceSphereRadius = 20.0f;
+
 	UGrabber* Grabber;
 
 	ADungeonGameCharacter* Owner;

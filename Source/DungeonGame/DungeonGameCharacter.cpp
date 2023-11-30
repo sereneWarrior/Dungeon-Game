@@ -18,7 +18,7 @@
 ADungeonGameCharacter::ADungeonGameCharacter()
 {
 	// Set size for collision capsule
-	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
+	GetCapsuleComponent()->InitCapsuleSize(30.f, 96.0f);
 
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
@@ -143,6 +143,7 @@ void ADungeonGameCharacter::Push(const FInputActionValue& Value)
 
 void ADungeonGameCharacter::Forward(const FInputActionValue& Value)
 {
+	// TODO Improve Forward Action & push action
 	UE_LOG(LogTemp, Warning, TEXT("FW started"));
 	if (Grabber->IsHoldingObject())
 		return;
@@ -157,19 +158,10 @@ void ADungeonGameCharacter::Forward(const FInputActionValue& Value)
 		pushable->InteractionStarted();
 }
 
+// For testing input
 void ADungeonGameCharacter::ForwardStop(const FInputActionValue& Value)
 {
 	UE_LOG(LogTemp, Warning, TEXT("FW stopped"));
-	//if (Grabber->IsHoldingObject())
-	//	return;
-
-
-	//if (!TracedObject.GetActor()
-	//	|| !TracedObject.GetActor()->Implements<UInteractable>())
-	//	return;
-	//// Close Door
-	//if (auto pushable = Cast<APushableObject>(TracedObject.GetActor()))
-	//	pushable->InteractionStopped();
 }
 
 

@@ -42,11 +42,14 @@ void UTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 void UTraceComponent::Trace()
 {
 	FVector start = GetComponentLocation();
-	FVector end = start + GetForwardVector() * 100.0f;
+	FVector end = start + GetForwardVector() * TraceDistance;
 
-	FCollisionShape Sphere = FCollisionShape::MakeSphere(50.0f);
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(TraceSphereRadius);
 	FHitResult out_hitResult;
-	DrawDebugSphere(GetWorld(), end, 50, 16, FColor::Blue);
+
+	// DEBUG Spheres
+	// DrawDebugSphere(GetWorld(), start, TraceSphereRadius/2, 16, FColor::Red);
+	// DrawDebugSphere(GetWorld(), end, TraceSphereRadius, 16, FColor::Blue);
 	// TODO: Move check to variable in character class.
 	if (Grabber->IsHoldingObject())
 	{
@@ -67,13 +70,16 @@ void UTraceComponent::Trace()
 			Sphere);
 	}
 
-
-	if (!out_hitResult.GetComponent() ||
-		out_hitResult.GetComponent() == Owner->GetTracedObject()->GetComponent())
+	if (out_hitResult.GetComponent() == Owner->GetTracedObject()->GetComponent())
 		return;
 	// TODO: Maybe use property to access hitresult in Character, remove dependency to Charactor
 	Owner->SetTracedObject(out_hitResult);
-	//UE_LOG(LogTemp, Warning, TEXT("Actor: %s"), *Owner->GetTracedObject()->GetActor()->GetName());
+
+	
+	UE_LOG(LogTemp, Warning, TEXT("Actor: %s"), 
+		Owner->GetTracedObject()->GetActor() ?
+		*Owner->GetTracedObject()->GetActor()->GetName() :
+		TEXT("NULL"));
 
 }
 
