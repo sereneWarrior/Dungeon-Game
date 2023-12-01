@@ -6,47 +6,35 @@
 UDoorTriggerComponent::UDoorTriggerComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+
 }
 
 void UDoorTriggerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	OnComponentBeginOverlap.AddDynamic(this, &UDoorTriggerComponent::OverlapBegin);
+	OnComponentEndOverlap.AddDynamic(this, &UDoorTriggerComponent::OverlapEnd);
+
 	if (ObjectToUnlock)
 	{
 		Mover = ObjectToUnlock->GetComponentByClass<UMovable>();
-		if (Mover)
+		if (!Mover)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Mover set"));
+			UE_LOG(LogTemp, Error, TEXT("Mover set"));
 		}
 	}
 }
 
-void UDoorTriggerComponent::SetMover(UMovable* NewMover)
+void UDoorTriggerComponent::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Mover = NewMover;
+
+	Mover->SetShouldMove(OtherActor->IsA(UnlockTriggerObjectClass));
 }
 
-void UDoorTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UDoorTriggerComponent::OverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
-	if (!Mover)
-		return;
-
-	AActor* triggeringActor = GetTriggeringActor();
-	if (triggeringActor != nullptr)
-		Mover->SetShouldMove(true);	
-	else
+	// TODO: Store current overlapping actor?
+	if (OtherActor->IsA(UnlockTriggerObjectClass)) 
 		Mover->SetShouldMove(false);
-}
-
-AActor* UDoorTriggerComponent::GetTriggeringActor() const
-{
-	TArray<AActor*> actors;
-	GetOverlappingActors(actors, UnlockTriggerObjectClass);
-
-	return actors.IsEmpty() ?
-		nullptr :
-		actors[0];
 }
