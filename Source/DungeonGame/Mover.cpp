@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Movable.h"
+#include "Mover.h"
 
 // Sets default values for this component's properties
-UMovable::UMovable()
+UMover::UMover()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -14,15 +14,14 @@ UMovable::UMovable()
 
 }
 
-
 // Called when the game starts
-void UMovable::BeginPlay()
+void UMover::BeginPlay()
 {
 	Super::BeginPlay();
 
 	owner = GetOwner();
 	auto Actor = GetAttachmentRootActor();
-// TODO: Put Timelines int owner class?
+	// TODO: Put Timelines int owner class?
 	FOnTimelineFloat ProgressUpdate;
 	ProgressUpdate.BindUFunction(this, FName("MoveObjectTimeline"));
 
@@ -32,26 +31,24 @@ void UMovable::BeginPlay()
 }
 
 
-void UMovable::TimelineTest(float Alpha)
+void UMover::TimelineTest(float Alpha)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Timeline value: %f"), Alpha);
 }
 
 // Called every frame
-void UMovable::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	Timeline.TickTimeline(DeltaTime);
-
-
 }
 
-void UMovable::ActivateMovement()
+void UMover::ActivateMovement()
 {
 	Timeline.Play();
 }
 
-void UMovable::DeactivateMovement()
+void UMover::DeactivateMovement()
 {
 	Timeline.Reverse();
 }

@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Movable.h"
+#include "Mover.h"
 #include "ObjectRotator.generated.h"
 
 /**
  * 
  */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class DUNGEONGAME_API UObjectRotator : public UMovable
+class DUNGEONGAME_API UObjectRotator : public UMover
 {
 	GENERATED_BODY()
 

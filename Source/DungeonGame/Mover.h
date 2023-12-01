@@ -3,19 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "Components/SceneComponent.h"
 #include <Components/TimelineComponent.h>
 
-#include "Movable.generated.h"
+#include "Mover.generated.h"
 
-UCLASS( Abstract )
-class DUNGEONGAME_API UMovable : public USceneComponent
+UCLASS(Abstract)
+class DUNGEONGAME_API UMover : public USceneComponent
 {
 	GENERATED_BODY()
 
 protected:
 	// Sets default values for this component's properties
-	UMovable();
+	UMover();
 
 	AActor* owner;
 
@@ -32,17 +32,18 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = Mover)
 	UCurveFloat* CurveFloat;
-	
+
 	// DEPRECATED
-	virtual void MoveObject(float DeltaTime) PURE_VIRTUAL(UMovable::RemoveReplicatedSubObject,);
+	virtual void MoveObject(float DeltaTime) PURE_VIRTUAL(UMover::RemoveReplicatedSubObject, );
+
+	virtual void MoveObjectTimeline(float Alpha) PURE_VIRTUAL(UMover::RemoveReplicatedSubObject, );
 	
-	virtual void MoveObjectTimeline(float Alpha) PURE_VIRTUAL(UMovable::RemoveReplicatedSubObject, );
 	UFUNCTION()
-	 void TimelineTest(float Alpha);
-public:	
+	void TimelineTest(float Alpha);
+
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
 
 	void ActivateMovement();
 	void DeactivateMovement();

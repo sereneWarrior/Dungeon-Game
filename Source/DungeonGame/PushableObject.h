@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 
 #include "Interactable.h"
-#include "Movable.h"
+#include "Mover.h"
 
 #include "PushableObject.generated.h"
 
@@ -16,7 +16,7 @@ class DUNGEONGAME_API APushableObject : public AActor, public IInteractable
 {
 	GENERATED_BODY()
 
-	UMovable* Mover;
+	UMover* Mover;
 
 	UPROPERTY(EditAnywhere)
 	int MaxPushCount = 2;

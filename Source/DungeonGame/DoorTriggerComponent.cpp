@@ -18,7 +18,7 @@ void UDoorTriggerComponent::BeginPlay()
 
 	if (ObjectToUnlock)
 	{
-		Mover = ObjectToUnlock->GetComponentByClass<UMovable>();
+		Mover = ObjectToUnlock->GetComponentByClass<UMover>();
 		if (!Mover)
 		{
 			UE_LOG(LogTemp, Error, TEXT("Mover set"));
@@ -30,12 +30,12 @@ void UDoorTriggerComponent::OverlapBegin(UPrimitiveComponent* OverlappedComponen
 {
 
 	if (OtherActor->IsA(UnlockTriggerObjectClass))
-		Mover->Activate();
+		Mover->ActivateMovement();
 }
 
 void UDoorTriggerComponent::OverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	// TODO: Store current overlapping actor?
 	if (OtherActor->IsA(UnlockTriggerObjectClass)) 
-		Mover->Deactivate();
+		Mover->DeactivateMovement();
 }

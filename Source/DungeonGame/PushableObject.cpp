@@ -15,7 +15,7 @@ APushableObject::APushableObject()
 void APushableObject::BeginPlay()
 {
 	Super::BeginPlay();
-	Mover = GetComponentByClass<UMovable>();
+	Mover = GetComponentByClass<UMover>();
 }
 
 // Called every frame
@@ -27,7 +27,7 @@ void APushableObject::Tick(float DeltaTime)
 
 void APushableObject::Interact(AActor* otherActor)
 {
-	Mover->SetShouldMove(true);
+	Mover->ActivateMovement();
 }
 
 void APushableObject::InteractionStopped()
@@ -35,12 +35,12 @@ void APushableObject::InteractionStopped()
 	UE_LOG(LogTemp, Warning, TEXT("TimelineEvent from owner"));
 	if (currentPushCount >= MaxPushCount)
 		return;
-	Mover->SetShouldMove(false);
+	Mover->DeactivateMovement();
 }
 
 void APushableObject::InteractionStarted()
 {
 	currentPushCount++;
-	Mover->SetShouldMove(true);
+	Mover->ActivateMovement();
 	
 }
