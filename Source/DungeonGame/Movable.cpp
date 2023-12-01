@@ -49,19 +49,22 @@ void UMovable::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 void UMovable::SetShouldMove(bool NewShouldMove)
 {
-
-	// TODO: Refactor...
-	if (!ShouldMove && NewShouldMove)
+	if (NewShouldMove)
 	{
 		Timeline.Play();
+		return;
 	}
+	Timeline.Reverse();
+}
 
-	if (ShouldMove && !NewShouldMove)
-	{
-		Timeline.Reverse();
-	}
-		
-	ShouldMove = NewShouldMove;
+void UMovable::Activate()
+{
+	Timeline.Play();
+}
+
+void UMovable::Deactivate()
+{
+	Timeline.Reverse();
 }
 
 

@@ -29,12 +29,13 @@ void UDoorTriggerComponent::BeginPlay()
 void UDoorTriggerComponent::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	Mover->SetShouldMove(OtherActor->IsA(UnlockTriggerObjectClass));
+	if (OtherActor->IsA(UnlockTriggerObjectClass))
+		Mover->Activate();
 }
 
 void UDoorTriggerComponent::OverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	// TODO: Store current overlapping actor?
 	if (OtherActor->IsA(UnlockTriggerObjectClass)) 
-		Mover->SetShouldMove(false);
+		Mover->Deactivate();
 }
