@@ -10,8 +10,6 @@ UMover::UMover()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	//T->AddInterpFloat(CurveFloat, TimelineProgress);
-
 }
 
 // Called when the game starts
@@ -20,10 +18,22 @@ void UMover::BeginPlay()
 	Super::BeginPlay();
 
 	owner = GetOwner();
-	auto Actor = GetAttachmentRootActor();
-	// TODO: Put Timelines int owner class?
+	
+	//TimelineComponent = owner->GetComponentByClass<UTimelineComponent>();
 	FOnTimelineFloat ProgressUpdate;
 	ProgressUpdate.BindUFunction(this, FName("MoveObjectTimeline"));
+
+	// Set up default timeline if Actor does not have timeline created.
+	if (!TimelineComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Set up timeline component"));
+		TimelineComponent = NewObject<UTimelineComponent>(owner, FName("Timeline"));
+		TimelineComponent->RegisterComponent();
+	}
+	
+	TimelineComponent->SetTimelineLength(1.0f);
+	TimelineComponent->SetPlayRate(1.0f / TransitionTime);
+	TimelineComponent->AddInterpFloat(CurveFloat, ProgressUpdate);
 
 	Timeline.AddInterpFloat(CurveFloat, ProgressUpdate);
 	Timeline.SetPlayRate(1.0f / TransitionTime);
@@ -31,9 +41,9 @@ void UMover::BeginPlay()
 }
 
 
-void UMover::TimelineTest(float Alpha)
+void UMover::TimelineTest()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Timeline value: %f"), Alpha);
+	UE_LOG(LogTemp, Warning, TEXT("Timeline Test"));
 }
 
 // Called every frame
@@ -41,14 +51,21 @@ void UMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	Timeline.TickTimeline(DeltaTime);
+
+	if (TimelineComponent)
+		TimelineComponent->TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 void UMover::ActivateMovement()
 {
-	Timeline.Play();
+	//Timeline.Play();
+	if (TimelineComponent)
+		TimelineComponent->Play();
 }
 
 void UMover::DeactivateMovement()
 {
-	Timeline.Reverse();
+	//Timeline.Reverse();
+	if (TimelineComponent)
+		TimelineComponent->Reverse();
 }

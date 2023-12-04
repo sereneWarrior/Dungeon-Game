@@ -4,11 +4,11 @@
 #include "Movable.h"
 
 // Sets default values for this component's properties
-UMovable::UMovable()
+AMovable::AMovable()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	
 
 	//T->AddInterpFloat(CurveFloat, TimelineProgress);
 
@@ -16,42 +16,24 @@ UMovable::UMovable()
 
 
 // Called when the game starts
-void UMovable::BeginPlay()
+void AMovable::BeginPlay()
 {
 	Super::BeginPlay();
 
-	owner = GetOwner();
-	auto Actor = GetAttachmentRootActor();
+
 // TODO: Put Timelines int owner class?
-	FOnTimelineFloat ProgressUpdate;
+	/*FOnTimelineFloat ProgressUpdate;
 	ProgressUpdate.BindUFunction(this, FName("MoveObjectTimeline"));
 
 	Timeline.AddInterpFloat(CurveFloat, ProgressUpdate);
 	Timeline.SetPlayRate(1.0f / TransitionTime);
-	Timeline.SetTimelineLength(1.0f);
+	Timeline.SetTimelineLength(1.0f);*/
 }
 
 
-void UMovable::TimelineTest(float Alpha)
+void AMovable::TimelineTest(float Alpha)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Timeline value: %f"), Alpha);
 }
 
-// Called every frame
-void UMovable::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	Timeline.TickTimeline(DeltaTime);
 
-
-}
-
-void UMovable::ActivateMovement()
-{
-	Timeline.Play();
-}
-
-void UMovable::DeactivateMovement()
-{
-	Timeline.Reverse();
-}

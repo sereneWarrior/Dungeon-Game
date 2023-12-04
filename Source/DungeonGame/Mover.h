@@ -30,6 +30,11 @@ protected:
 
 	FTimeline Timeline;
 
+	FTimeline* CastedTimeline;
+
+	UPROPERTY(BlueprintReadWrite)
+	class UTimelineComponent* TimelineComponent;
+
 	UPROPERTY(EditAnywhere, Category = Mover)
 	UCurveFloat* CurveFloat;
 
@@ -38,8 +43,8 @@ protected:
 
 	virtual void MoveObjectTimeline(float Alpha) PURE_VIRTUAL(UMover::RemoveReplicatedSubObject, );
 	
-	UFUNCTION()
-	void TimelineTest(float Alpha);
+	UFUNCTION(BlueprintCallable)
+	void TimelineTest();
 
 public:
 	// Called every frame

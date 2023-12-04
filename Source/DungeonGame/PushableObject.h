@@ -39,7 +39,7 @@ public:
 
 	virtual void Interact(AActor* otherActor = nullptr);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void InteractionStopped();
 	void InteractionStarted();
 

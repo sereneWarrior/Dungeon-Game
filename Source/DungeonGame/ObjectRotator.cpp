@@ -7,15 +7,6 @@
 void UObjectRotator::BeginPlay()
 {
 	Super::BeginPlay();
-
-	FOnTimelineEvent TestEvent;
-	// TODO: Refactor Rotator should not have to care about owner identity
-	if (auto pushable = Cast<APushableObject>(owner))
-	{
-		TestEvent.BindUFunction(pushable, FName("InteractionStopped"));
-		Timeline.AddEvent(0.1f, TestEvent);
-	}
-	
 	
 	TargetRotation = owner->GetActorRotation() + FRotator(0.0f, RotationAngle, 0.0f);
 

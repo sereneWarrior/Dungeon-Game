@@ -137,7 +137,10 @@ void ADungeonGameCharacter::Push(const FInputActionValue& Value)
 		return;
 	// Open door completely
 	if (auto pushable = Cast<APushableObject>(TracedObject.GetActor()))
+	{
 		pushable->Interact();
+	}
+		
 
 }
 

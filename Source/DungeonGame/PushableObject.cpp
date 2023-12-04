@@ -28,6 +28,8 @@ void APushableObject::Tick(float DeltaTime)
 void APushableObject::Interact(AActor* otherActor)
 {
 	Mover->ActivateMovement();
+
+	SetActorEnableCollision(false);
 }
 
 void APushableObject::InteractionStopped()
@@ -42,5 +44,6 @@ void APushableObject::InteractionStarted()
 {
 	currentPushCount++;
 	Mover->ActivateMovement();
-	
+	if (currentPushCount >= MaxPushCount)
+		SetActorEnableCollision(false); // TODO: Make it Timelinefinished event. 
 }
