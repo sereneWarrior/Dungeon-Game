@@ -28,10 +28,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mover)
 	bool ShouldMove = false;
 
-	FTimeline Timeline;
-
-	FTimeline* CastedTimeline;
-
 	UPROPERTY(BlueprintReadWrite)
 	class UTimelineComponent* TimelineComponent;
 

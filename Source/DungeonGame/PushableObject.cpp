@@ -27,23 +27,20 @@ void APushableObject::Tick(float DeltaTime)
 
 void APushableObject::Interact(AActor* otherActor)
 {
+	currentPushCount++;
 	Mover->ActivateMovement();
 
-	SetActorEnableCollision(false);
+	if (currentPushCount >= MaxPushCount)
+		SetActorEnableCollision(false); // TODO: Make it Timelinefinished event. 
 }
 
+// Called from timeline.
 void APushableObject::InteractionStopped()
 {
 	UE_LOG(LogTemp, Warning, TEXT("TimelineEvent from owner"));
 	if (currentPushCount >= MaxPushCount)
 		return;
+		
 	Mover->DeactivateMovement();
 }
 
-void APushableObject::InteractionStarted()
-{
-	currentPushCount++;
-	Mover->ActivateMovement();
-	if (currentPushCount >= MaxPushCount)
-		SetActorEnableCollision(false); // TODO: Make it Timelinefinished event. 
-}

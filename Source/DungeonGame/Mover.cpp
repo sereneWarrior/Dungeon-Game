@@ -34,10 +34,6 @@ void UMover::BeginPlay()
 	TimelineComponent->SetTimelineLength(1.0f);
 	TimelineComponent->SetPlayRate(1.0f / TransitionTime);
 	TimelineComponent->AddInterpFloat(CurveFloat, ProgressUpdate);
-
-	Timeline.AddInterpFloat(CurveFloat, ProgressUpdate);
-	Timeline.SetPlayRate(1.0f / TransitionTime);
-	Timeline.SetTimelineLength(1.0f);
 }
 
 
@@ -50,22 +46,16 @@ void UMover::TimelineTest()
 void UMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	Timeline.TickTimeline(DeltaTime);
 
-	if (TimelineComponent)
-		TimelineComponent->TickComponent(DeltaTime, TickType, ThisTickFunction);
+	TimelineComponent->TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 void UMover::ActivateMovement()
 {
-	//Timeline.Play();
-	if (TimelineComponent)
 		TimelineComponent->Play();
 }
 
 void UMover::DeactivateMovement()
 {
-	//Timeline.Reverse();
-	if (TimelineComponent)
-		TimelineComponent->Reverse();
+	TimelineComponent->Reverse();
 }

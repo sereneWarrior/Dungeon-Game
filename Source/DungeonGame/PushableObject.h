@@ -41,7 +41,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void InteractionStopped();
-	void InteractionStarted();
 
 	void SetAction(bool moveFw) { moveForward = moveFw; }
 };
