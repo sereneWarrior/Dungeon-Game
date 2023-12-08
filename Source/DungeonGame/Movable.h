@@ -5,29 +5,45 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include <Components/TimelineComponent.h>
+#include "Mover.h"
 
 #include "Movable.generated.h"
 
-UCLASS( )
+
+UCLASS(Abstract)
 class DUNGEONGAME_API AMovable : public AActor
 {
 	GENERATED_BODY()
 
 protected:
-	// Sets default values for this component's properties
-	AMovable();
+	AMovable() = default;
 
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	FTimeline Timeline;
+	UPROPERTY()
+	UMover* Mover;
+	
+	// TODO: Create struct for time line event? Event: Time, Obj, FunctionName
 
-	UPROPERTY(EditAnywhere, Category = Mover)
+	UPROPERTY(EditAnywhere, Category = Movement)
+	float TransitionTime = 5.0f;
+
+	UPROPERTY(BlueprintReadWrite)
+	UTimelineComponent* TimelineComponent;
+
+	UPROPERTY(EditAnywhere, Category = Movement)
 	UCurveFloat* CurveFloat;
 	
 	UFUNCTION()
-	 void TimelineTest(float Alpha);
+	virtual void DisableMovement();
 
 public:	
+	virtual void Tick(float DeltaTime) override;
+
+	void PlayTimeline() { TimelineComponent->Play(); }
+	void ReverseTimeline() { TimelineComponent->Reverse(); }
+	void StopTimeline() { TimelineComponent->Stop(); }
+
 
 };

@@ -2,18 +2,13 @@
 
 
 #include "ObjectSlider.h"
+#include "Movable.h"
 
 void UObjectSlider::BeginPlay()
 {
 	Super::BeginPlay();
 
 	OriginLoc = owner->GetActorLocation();
-}
-
-void UObjectSlider::MoveObject(float DeltaTime)
-{
-	FVector LocationAfterTransition = FMath::VInterpConstantTo(owner->GetActorLocation(), TargetLocation, GetWorld()->GetDeltaSeconds(), TransitionTime);
-	owner->SetActorLocation(LocationAfterTransition);
 }
 
 void UObjectSlider::MoveObjectTimeline(float Value)

@@ -3,37 +3,49 @@
 
 #include "Movable.h"
 
-// Sets default values for this component's properties
-AMovable::AMovable()
-{
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	
-
-	//T->AddInterpFloat(CurveFloat, TimelineProgress);
-
-}
-
-
 // Called when the game starts
 void AMovable::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Mover = GetComponentByClass<UMover>();
+	TimelineComponent = GetComponentByClass<UTimelineComponent>();
 
-// TODO: Put Timelines int owner class?
-	/*FOnTimelineFloat ProgressUpdate;
-	ProgressUpdate.BindUFunction(this, FName("MoveObjectTimeline"));
+	// Set up default timeline if Actor does not have timeline created.
+	if (!TimelineComponent)
+	{
+		TimelineComponent = NewObject<UTimelineComponent>(this, FName("MovementTimeline"));
+		TimelineComponent->RegisterComponent();
+	}
 
-	Timeline.AddInterpFloat(CurveFloat, ProgressUpdate);
-	Timeline.SetPlayRate(1.0f / TransitionTime);
-	Timeline.SetTimelineLength(1.0f);*/
+	FOnTimelineFloat onProgressUpdate;
+	FOnTimelineEventStatic onTimelineFinishedFunc;
+
+	onProgressUpdate.BindUFunction(Mover, FName("MoveObjectTimeline"));
+	// TODO: Reverses play at evnet. Needs to be more customizable & extendable.
+	onTimelineFinishedFunc.BindUFunction(this, FName("DisableMovement"));
+	
+	// General settings
+	TimelineComponent->SetTimelineLength(1.0f);
+	TimelineComponent->SetPlayRate(1.0f / TransitionTime);
+
+	// Curve setting for movement 
+	// TODO: Check if adding another curve makes problems
+	if (CurveFloat)
+		TimelineComponent->AddInterpFloat(CurveFloat, onProgressUpdate);
+
+	TimelineComponent->SetTimelineFinishedFunc(onTimelineFinishedFunc);
 }
 
-
-void AMovable::TimelineTest(float Alpha)
+void AMovable::Tick(float DeltaTime)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Timeline value: %f"), Alpha);
+	Super::Tick(DeltaTime);
+
+	TimelineComponent->TickComponent(DeltaTime, LEVELTICK_All, nullptr);
 }
 
+void AMovable::DisableMovement()
+{
+	TimelineComponent->SetComponentTickEnabled(false);
+}
 

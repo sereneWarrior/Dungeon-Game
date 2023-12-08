@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Mover.h"
+
 #include "ObjectRotator.generated.h"
 
 /**
@@ -14,7 +15,7 @@ class DUNGEONGAME_API UObjectRotator : public UMover
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = Mover)
+	UPROPERTY(EditAnywhere, Category = Movement)
 	float RotationAngle;
 
 	FRotator TargetRotation;
@@ -23,12 +24,8 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	virtual void MoveObject(float DeltaTime) override;
 	UFUNCTION()
 	virtual void MoveObjectTimeline(float Value) override;
 
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mover)
-	UStaticMeshComponent* Mesh;
 
 };

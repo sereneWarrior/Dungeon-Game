@@ -5,9 +5,10 @@
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
 
-#include "Mover.h"
+#include "Movable.h"
 
 #include "DoorTriggerComponent.generated.h"
+
 /**
  * 
  */
@@ -16,16 +17,15 @@ class DUNGEONGAME_API UDoorTriggerComponent : public UBoxComponent
 {
 	GENERATED_BODY()
 
+	// TODO Set up class for unlock activating objects into 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AActor> UnlockTriggerObjectClass;
 
 	UPROPERTY(EditAnywhere)
-	AActor* ObjectToUnlock;
-
-	UMover* Mover;
+	AMovable* testobj;
 
 protected:
-	UDoorTriggerComponent();
+	UDoorTriggerComponent() = default;
 
 	// Called when the game starts
 	virtual void BeginPlay() override;

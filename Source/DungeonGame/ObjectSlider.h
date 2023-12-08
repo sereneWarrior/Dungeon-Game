@@ -14,7 +14,7 @@ class DUNGEONGAME_API UObjectSlider : public UMover
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = Mover)
+	UPROPERTY(EditAnywhere, Category = Movement)
 	FVector TransitionOffset;
 
 	FVector TargetLocation;
@@ -25,8 +25,6 @@ class DUNGEONGAME_API UObjectSlider : public UMover
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-	virtual void MoveObject(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
 	virtual void MoveObjectTimeline(float Value) override;

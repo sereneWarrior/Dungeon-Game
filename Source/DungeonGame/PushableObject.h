@@ -7,25 +7,22 @@
 
 #include "Interactable.h"
 #include "Mover.h"
+#include "Movable.h"
 
 #include "PushableObject.generated.h"
 
 
 UCLASS()
-class DUNGEONGAME_API APushableObject : public AActor, public IInteractable
+class DUNGEONGAME_API APushableObject : public AMovable
 {
 	GENERATED_BODY()
-
-	UMover* Mover;
 
 	UPROPERTY(EditAnywhere)
 	int MaxPushCount = 2;
 
 	int currentPushCount = 0;
 
-	bool moveForward = true;
-	
-public:	
+public:
 	// Sets default values for this actor's properties
 	APushableObject();
 
@@ -33,14 +30,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UFUNCTION()
+	void HideObjectFromTracing();
 
-	virtual void Interact(AActor* otherActor = nullptr);
 
-	UFUNCTION(BlueprintCallable)
+public:
+	void InteractionStarted();
+
+	UFUNCTION()
 	void InteractionStopped();
 
-	void SetAction(bool moveFw) { moveForward = moveFw; }
 };
