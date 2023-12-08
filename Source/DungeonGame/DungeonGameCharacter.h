@@ -99,10 +99,6 @@ protected:
 	/** Called for pushing input */
 	void Push(const FInputActionValue& Value);
 
-	void Forward(const FInputActionValue& Value);
-
-	void ForwardStop(const FInputActionValue & Value);
-
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;

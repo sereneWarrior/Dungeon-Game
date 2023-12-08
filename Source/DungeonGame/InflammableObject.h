@@ -26,7 +26,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	virtual void Interact(AActor* other);
+	virtual void InteractionStarted(AActor* other);
 
 	bool IsActive() const;
 	void SetActivity(bool value);

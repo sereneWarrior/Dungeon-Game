@@ -6,14 +6,13 @@
 #include "GameFramework/Actor.h"
 
 #include "Interactable.h"
-#include "Mover.h"
 #include "Movable.h"
 
 #include "PushableObject.generated.h"
 
 
 UCLASS()
-class DUNGEONGAME_API APushableObject : public AMovable
+class DUNGEONGAME_API APushableObject : public AMovable, public IInteractable
 {
 	GENERATED_BODY()
 
@@ -33,9 +32,8 @@ protected:
 	UFUNCTION()
 	void HideObjectFromTracing();
 
-
 public:
-	void InteractionStarted();
+	virtual void InteractionStarted(AActor* otherActor = nullptr);
 
 	UFUNCTION()
 	void InteractionStopped();

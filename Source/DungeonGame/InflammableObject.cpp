@@ -16,7 +16,7 @@ void AInflammableObject::BeginPlay()
 	EmitterManager->InitializeEmitter();
 }
 
-void AInflammableObject::Interact(AActor* other)
+void AInflammableObject::InteractionStarted(AActor* other)
 {
 	auto otherFlammable = Cast<AInflammableObject>(other);
 	

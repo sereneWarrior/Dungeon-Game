@@ -29,8 +29,9 @@ void APushableObject::HideObjectFromTracing()
 		SetActorEnableCollision(false);// TODO: Put into interactible?
 }
 
-void APushableObject::InteractionStarted()
+void APushableObject::InteractionStarted(AActor* otherActor)
 {
+	UE_LOG(LogTemp, Warning, TEXT("interact"));
 	currentPushCount++;
 	TimelineComponent->Play();
 }

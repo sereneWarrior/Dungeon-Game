@@ -76,9 +76,6 @@ void ADungeonGameCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 		EnhancedInputComponent->BindAction(InterAction, ETriggerEvent::Triggered, this, &ADungeonGameCharacter::Interact);
 
 		EnhancedInputComponent->BindAction(PushAction, ETriggerEvent::Triggered, this, &ADungeonGameCharacter::Push);
-		
-		//EnhancedInputComponent->BindAction(ForwardAction, ETriggerEvent::Started, this, &ADungeonGameCharacter::Forward);
-		//EnhancedInputComponent->BindAction(ForwardAction, ETriggerEvent::Completed, this, &ADungeonGameCharacter::ForwardStop);
 	}
 }
 
@@ -121,7 +118,7 @@ void ADungeonGameCharacter::Interact(const FInputActionValue& Value)
 
 	// Interact with flammable objects.
 	if (auto flammable = Cast<AInflammableObject>(TracedObject.GetActor()))
-		flammable->Interact(PhysicsHandle->GetGrabbedComponent()->GetOwner());
+		flammable->InteractionStarted(PhysicsHandle->GetGrabbedComponent()->GetOwner());
 
 }
 
@@ -132,42 +129,13 @@ void ADungeonGameCharacter::Push(const FInputActionValue& Value)
 		return;
 
 
-	if (!TracedObject.GetActor())
-		//|| !TracedObject.GetActor()->Implements<UInteractable>())
+	if (!TracedObject.GetActor()
+		|| !TracedObject.GetActor()->Implements<UInteractable>())
 		return;
+
 	// Open door completely
 	if (APushableObject* pushable = Cast<APushableObject>(TracedObject.GetActor()))
-	{
 		pushable->InteractionStarted();
-	}
-	
 }
-
-
-void ADungeonGameCharacter::Forward(const FInputActionValue & Value)
-{
-//{
-//	// TODO Improve Forward Action & push action
-//	UE_LOG(LogTemp, Warning, TEXT("FW started"));
-//	if (Grabber->IsHoldingObject())
-//		return;
-//
-//
-//	if (!TracedObject.GetActor()
-//		|| !TracedObject.GetActor()->Implements<UInteractable>())
-//		return;
-//
-//	// Open Door slightly
-//	if (auto pushable = Cast<APushableObject>(TracedObject.GetActor()))
-//		pushable->InteractionStarted();
-}
-
-// For testing input
-void ADungeonGameCharacter::ForwardStop(const FInputActionValue& Value)
-{
-	//UE_LOG(LogTemp, Warning, TEXT("FW stopped"));
-}
-
-
 
 
